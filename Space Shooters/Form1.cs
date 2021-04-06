@@ -31,30 +31,35 @@ namespace Space_Shooters
         List<int> meteorSizeList = new List<int>();
         List<int> projectileXList = new List<int>();
         List<int> projectileYList = new List<int>();
+        List<int> projectile2XList = new List<int>();
+        List<int> projectile2YList = new List<int>();
 
         int projectileSpeed = 14;
-        int meteorSize = 15;
         int meteorSpeed = 5;
         int projectileWidth = 10;
         int projectileHeight = 3;
 
         Image shipImage;
         Image meteorImage;
+        Image shipImage2;
 
-        int spaceShip1X = 150;
-        int spaceShip1Y = 150;
-        int spaceShip2X = 600;
-        int spaceShip2Y = 400;
+        int spaceShip1X = 5;
+        int spaceShip1Y = 155;
+        int spaceShip2X = 737;
+        int spaceShip2Y = 155;
         int spaceShipWidth = 60;
         int spaceShipHeight = 30;
         int spaceShipSpeed = 5;
 
+        int playerScore1 = 0;
+        int playerScore2 = 0;
+
         int shotCounter = 0;
+        int shotCounter2 = 0;
         int counter = 0;
-        int time = 0;
 
         SolidBrush redBrush = new SolidBrush(Color.Red);
-        SolidBrush greenBrush = new SolidBrush(Color.Green);
+        SolidBrush greenBrush = new SolidBrush(Color.Lime);
         SolidBrush blackBrush = new SolidBrush(Color.Black);
         SolidBrush whiteBrush = new SolidBrush(Color.White);
 
@@ -67,14 +72,15 @@ namespace Space_Shooters
         bool leftArrowDown = false;
         bool rightArrowDown = false;
         bool shiftDown = false;
+        bool numpad0Down = false;
+        bool tabDown = false;
 
         SoundPlayer laser = new SoundPlayer(Properties.Resources.laser);
         SoundPlayer crash = new SoundPlayer(Properties.Resources.crash);
         SoundPlayer meteorExplosion = new SoundPlayer(Properties.Resources.meteorExplosion);
         SoundPlayer click = new SoundPlayer(Properties.Resources.click);
-        SoundPlayer startingMusic = new SoundPlayer(Properties.Resources.startingMusic);
 
-
+        System.Windows.Media.MediaPlayer startingMusic = new System.Windows.Media.MediaPlayer();
 
         Random randGen = new Random();
         int randValue = 0;
@@ -83,6 +89,8 @@ namespace Space_Shooters
         {
             InitializeComponent();
 
+            startingMusic.Open(new Uri(Application.StartupPath + "/Resources/backMusic.wav"));
+            startingMusic.MediaEnded += new EventHandler(startingMusic_MediaEnded);
         }
         public void GameInitialize()
         {
@@ -98,14 +106,29 @@ namespace Space_Shooters
             projectileXList.Clear();
             projectileYList.Clear();
 
+            shipImage = Properties.Resources.goodship;
+            shipImage2 = Properties.Resources.player2;
+            meteorImage = Properties.Resources.meteor;
+        }
+        public void GameInitialize2()
+        {
+            gameEngine.Enabled = true;
+            gameState = "controls PVP";
 
-            int spaceShip1X = 150;
-            int spaceShip1Y = 150;
-            int spaceShip2X = 600;
-            int spaceShip2Y = 400;
+            projectileXList.Clear();
+            projectileYList.Clear();
+            projectile2XList.Clear();
+            projectile2YList.Clear();
+            meteorXList.Clear();
+            meteorYList.Clear();
+
+
+            titleLabel.Text = "";
+            subTitleLabel.Text = "";
+            timerLabel.Text = "";
 
             shipImage = Properties.Resources.goodship;
-            meteorImage = Properties.Resources.meteor;
+            shipImage2 = Properties.Resources.player2;
         }
 
         private void SpaceShooters_KeyDown(object sender, KeyEventArgs e)
@@ -139,17 +162,28 @@ namespace Space_Shooters
                 case Keys.ShiftKey:
                     shiftDown = true;
                     break;
+                case Keys.Insert:
+                    numpad0Down = true;
+                    break;
                 case Keys.Space:
                     click.Play();
                     if (gameState == "waiting" || gameState == "over")
                     {
                         GameInitialize();
+                        gameState = "controls";
                     }
                     break;
                 case Keys.Escape:
                     if (gameState == "waiting" || gameState == "over")
                     {
                         Application.Exit();
+                    }
+                    break;
+                case Keys.Tab:
+                    if (gameState == "waiting" || gameState == "over")
+                    {
+                        GameInitialize2();
+                        gameState = "controls PVP";
                     }
                     break;
             }
@@ -186,12 +220,23 @@ namespace Space_Shooters
                 case Keys.ShiftKey:
                     shiftDown = false;
                     break;
+                case Keys.Insert:
+                    numpad0Down = false;
+                    break;
+                case Keys.Tab:
+                    tabDown = false;
+                    break;
             }
         }
 
         private void SpaceShooters_Paint(object sender, PaintEventArgs e)
         {
-            if (gameState == "waiting")
+            if (gameState == "controls PVP")
+            {
+                titleLabel.Text = "      Controls";
+                subTitleLabel.Text = "PLAYER 1 CONTROLS\n W Key: Up\n S Key: Down\n A Key: Left\n D Key: Right\n Shift Key: Shoot\n PLAYER 2 CONTROLS\n Up Arrow Key: Up";
+            }
+            else if (gameState == "waiting")
             {
                 titleLabel.Text = "SPACE SHOOTERS";
                 subTitleLabel.Text = "Press Space Bar to Play or Escape to Exit Game";
@@ -201,17 +246,39 @@ namespace Space_Shooters
                 titleLabel.Text = "      Controls";
                 subTitleLabel.Text = "W Key: Up\n S Key: Down\n A Key: Left\n D Key: Right\n Shift Key: Shoot\n\n Survive as long as you can!";
             }
+            else if (gameState == "running PVP")
+            {
+                //Player 1
+                e.Graphics.DrawImage(shipImage, spaceShip1X, spaceShip1Y, spaceShipWidth, spaceShipHeight);
+
+                //Player 2
+                e.Graphics.DrawImage(shipImage2, spaceShip2X, spaceShip2Y, spaceShipWidth, spaceShipHeight);
+
+                //Player 1 projectiles
+                for (int i = 0; i < projectileXList.Count; i++)
+                {
+                    e.Graphics.FillRectangle(redBrush, projectileXList[i], projectileYList[i], projectileWidth, projectileHeight);
+                }
+
+                //Player 2 projectiles
+                for (int i = 0; i < projectile2XList.Count; i++)
+                {
+                    e.Graphics.FillRectangle(greenBrush, projectile2XList[i], projectile2YList[i], projectileWidth, projectileHeight);
+                }
+            }
             else if (gameState == "running")
             {
-                //Space Ship 1
+                //Player 1
                 e.Graphics.DrawImage(shipImage, spaceShip1X, spaceShip1Y, spaceShipWidth, spaceShipHeight);
                 timerLabel.Text = myWatch.Elapsed.ToString(@"m\:ss\:ff");
+
                 //Meteors
                 for (int i = 0; i < meteorXList.Count; i++)
                 {
                     e.Graphics.DrawImage(meteorImage, meteorXList[i], meteorYList[i], meteorSizeList[i], meteorSizeList[i]);
                 }
-                //Projectiles
+
+                //Player 1 projectiles
                 for (int i = 0; i < projectileXList.Count; i++)
                 {
                     e.Graphics.FillRectangle(redBrush, projectileXList[i], projectileYList[i], projectileWidth, projectileHeight);
@@ -219,6 +286,11 @@ namespace Space_Shooters
             }
         }
 
+        private void startingMusic_MediaEnded(object sender, EventArgs e)
+        {
+            startingMusic.Stop();
+            startingMusic.Play();
+        }
 
         private void GameEngine_Tick(object sender, EventArgs e)
         {
@@ -227,26 +299,35 @@ namespace Space_Shooters
                 counter++;
                 if (counter > 200)
                 {
+                    startingMusic.Play();
                     gameState = "running";
                     titleLabel.Text = "";
                     subTitleLabel.Text = "";
                     survivedLabel.Text = "";
+                    player1Score.Text = "";
+                    player2Score.Text = "";
                     myWatch.Start();
                     counter = 0;
                     counter++;
-
-                    var startingMusic = new System.Windows.Media.MediaPlayer();
-
-                    startingMusic.Open(new Uri(Application.StartupPath + "/Resources/startingMusic"));
-
-                    startingMusic.Play();
-
-
                 }
-
             }
 
-            //move hero 1
+            if (gameState == "controls PVP")
+            {
+                counter++;
+                if (counter > 200)
+                {
+                    startingMusic.Play();
+                    gameState = "running PVP";
+                    titleLabel.Text = "";
+                    subTitleLabel.Text = "";
+                    survivedLabel.Text = "";
+                    counter = 0;
+                    counter++;
+                }
+            }
+
+            //move player 1
             if (wDown == true && spaceShip1Y > 5)
             {
                 spaceShip1Y -= spaceShipSpeed;
@@ -264,9 +345,28 @@ namespace Space_Shooters
                 spaceShip1X += spaceShipSpeed;
             }
 
-            //Projectiles
+            //move player 2
+            if (upArrowDown == true && spaceShip2Y > 5)
+            {
+                spaceShip2Y -= spaceShipSpeed;
+            }
+            if (downArrowDown == true && spaceShip2Y < 370)
+            {
+                spaceShip2Y += spaceShipSpeed;
+            }
+            if (leftArrowDown == true && spaceShip2X > 370)
+            {
+                spaceShip2X -= spaceShipSpeed;
+            }
+            if (rightArrowDown == true && spaceShip2X < 737)
+            {
+                spaceShip2X += spaceShipSpeed;
+            }
+
+            //Generating projectiles
+            //player 1 shooting
             shotCounter++;
-            if (shiftDown == true && shotCounter > 10)
+            if (shiftDown == true && shotCounter > 16)
             {
                 laser.Play();
                 projectileXList.Add(spaceShip1X);
@@ -278,39 +378,58 @@ namespace Space_Shooters
                 projectileXList[i] += projectileSpeed;
             }
 
-            //Generating meteors
-
-            randValue = randGen.Next(0, 10);
-            counter++;
-            if (randValue < 1)
+            //player 2 shooting
+            if (gameState == "running PVP")
             {
-                meteorXList.Add(randGen.Next(1400, 1500));
-                meteorYList.Add(randGen.Next(0, 400));
-
-                meteorSizeList.Add(randGen.Next(15, 40));
-                if (counter <= 100)
+                shotCounter2++;
+                if (numpad0Down == true && shotCounter2 > 16)
                 {
-                    meteorSpeed = 5;
+                    laser.Play();
+                    projectile2XList.Add(spaceShip2X);
+                    projectile2YList.Add(spaceShip2Y);
+                    shotCounter2 = 0;
                 }
-
-                if (counter >= 480 && counter < 960)
+                for (int i = 0; i < projectile2XList.Count(); i++)
                 {
-                    meteorSpeed = 7;
+                    projectile2XList[i] -= projectileSpeed;
                 }
-
-                if (counter >= 960)
+            }
+            //Generating meteors
+            if (gameState == "running")
+            {
+                randValue = randGen.Next(0, 10);
+                counter++;
+                if (randValue < 1)
                 {
-                    meteorSpeed = 10;
-                }
+                    meteorXList.Add(randGen.Next(1400, 1500));
+                    meteorYList.Add(randGen.Next(0, 400));
 
-                if (counter >= 1920)
-                {
-                    meteorSpeed = 13;
-                }
+                    meteorSizeList.Add(randGen.Next(15, 40));
+                    if (counter <= 100)
+                    {
+                        meteorSpeed = 5;
+                    }
 
-                if (counter >= 3840)
-                {
-                    meteorSpeed = 20;
+                    if (counter >= 480 && counter < 960)
+                    {
+                        meteorSpeed = 7;
+                    }
+
+                    if (counter >= 960)
+                    {
+                        meteorSpeed = 10;
+                    }
+
+                    if (counter >= 1920)
+                    {
+                        meteorSpeed = 13;
+                    }
+
+                    if (counter >= 3840)
+                    {
+                        startingMusic.Stop();
+                        meteorSpeed = 20;
+                    }
                 }
             }
 
@@ -321,12 +440,15 @@ namespace Space_Shooters
 
             //Collision with meteors and spaceship
             Rectangle spaceShipRec = new Rectangle(spaceShip1X, spaceShip1Y, spaceShipWidth, spaceShipHeight);
+            Rectangle spaceShipRec2 = new Rectangle(spaceShip2X, spaceShip2Y, spaceShipWidth, spaceShipHeight);
+
             for (int i = 0; i < meteorXList.Count(); i++)
             {
                 Rectangle meteorRec = new Rectangle(meteorXList[i], meteorYList[i], meteorSizeList[i], meteorSizeList[i]);
 
                 if (spaceShipRec.IntersectsWith(meteorRec))
                 {
+                    startingMusic.Stop();
                     crash.Play();
                     gameEngine.Enabled = false;
                     myWatch.Stop();
@@ -358,14 +480,79 @@ namespace Space_Shooters
                         break;
                     }
                 }
-
-
-
-
             }
+            if (gameState == "running PVP")
+            {
+                //Collision with projectiles and ships in PVP mode
+                //Player 2 shooting player 1
+                for (int i = 0; i < projectile2XList.Count(); i++)
+                {
+                    Rectangle projectileRec2 = new Rectangle(projectile2XList[i], projectile2YList[i], projectileWidth, projectileHeight);
+
+                    if (spaceShipRec.IntersectsWith(projectileRec2))
+                    {
+                        playerScore2++;
+                        player2Score.Text = $"{playerScore2}";
+                        spaceShip1X = 5;
+                        spaceShip1Y = 155;
+                        spaceShip2X = 737;
+                        spaceShip2Y = 155;
+                        projectile2XList.RemoveAt(i);
+                        projectile2YList.RemoveAt(i);
+                        Thread.Sleep(2000);
+                    }
+                }
+
+                //Player 1 shooting player 2
+                for (int i = 0; i < projectileXList.Count(); i++)
+                {
+
+                    Rectangle projectileRec = new Rectangle(projectileXList[i], projectileYList[i], projectileWidth, projectileHeight);
+
+                    if (spaceShipRec2.IntersectsWith(projectileRec))
+                    {
+                        playerScore1++;
+                        player1Score.Text = $"{playerScore1}";
+                        spaceShip1X = 5;
+                        spaceShip1Y = 155;
+                        spaceShip2X = 737;
+                        spaceShip2Y = 155;
+                        projectileXList.RemoveAt(i);
+                        projectileYList.RemoveAt(i);
+                        Thread.Sleep(2000);
+                    }
+                }
+
+                //If player 1 wins
+                if (playerScore1 == 5)
+                {
+                    startingMusic.Stop();
+                 
+                    gameEngine.Enabled = false;
+                    gameState = "over";
+                    titleLabel.Text = "  Player 1 Wins!";
+                    subTitleLabel.Text = " Press Space Bar to Play Single Player, Tab to Play Multiplayer, or Escape to Exit Game";
+                    playerScore1 = 0;
+                    player1Score.Text = "";
+                }
+
+                //If player 2 wins
+                if (playerScore2 == 5)
+                {
+                    startingMusic.Stop();
+                    
+                    gameEngine.Enabled = false;
+                    gameState = "over";
+                    titleLabel.Text = "  Player 2 Wins!";
+                    subTitleLabel.Text = " Press Space Bar to Play Single Player, Tab to Play Multiplayer, or Escape to Exit Game";
+                    playerScore1 = 0;
+                    player1Score.Text = "";
+                }
+            }
+
+            //Points and winning in PVP mode
 
             Refresh();
         }
-
     }
 }
