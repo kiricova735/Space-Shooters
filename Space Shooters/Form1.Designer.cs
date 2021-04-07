@@ -66,7 +66,7 @@
             this.subTitleLabel.Size = new System.Drawing.Size(739, 244);
             this.subTitleLabel.TabIndex = 2;
             this.subTitleLabel.Text = "Press Space to Play or Escape to Exit Game";
-            this.subTitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.subTitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // timerLabel
             // 
@@ -91,7 +91,7 @@
             this.survivedLabel.BackColor = System.Drawing.Color.Transparent;
             this.survivedLabel.Font = new System.Drawing.Font("mono 07_66", 9F);
             this.survivedLabel.ForeColor = System.Drawing.Color.White;
-            this.survivedLabel.Location = new System.Drawing.Point(157, 1);
+            this.survivedLabel.Location = new System.Drawing.Point(166, 1);
             this.survivedLabel.Name = "survivedLabel";
             this.survivedLabel.Size = new System.Drawing.Size(196, 32);
             this.survivedLabel.TabIndex = 4;
@@ -102,7 +102,7 @@
             this.player1Score.BackColor = System.Drawing.Color.Transparent;
             this.player1Score.Font = new System.Drawing.Font("mono 08_56", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.player1Score.ForeColor = System.Drawing.Color.White;
-            this.player1Score.Location = new System.Drawing.Point(8, 288);
+            this.player1Score.Location = new System.Drawing.Point(12, 9);
             this.player1Score.Name = "player1Score";
             this.player1Score.Size = new System.Drawing.Size(80, 99);
             this.player1Score.TabIndex = 5;
@@ -112,7 +112,7 @@
             this.player2Score.BackColor = System.Drawing.Color.Transparent;
             this.player2Score.Font = new System.Drawing.Font("mono 08_56", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.player2Score.ForeColor = System.Drawing.Color.White;
-            this.player2Score.Location = new System.Drawing.Point(710, 288);
+            this.player2Score.Location = new System.Drawing.Point(710, 9);
             this.player2Score.Name = "player2Score";
             this.player2Score.Size = new System.Drawing.Size(80, 99);
             this.player2Score.TabIndex = 6;

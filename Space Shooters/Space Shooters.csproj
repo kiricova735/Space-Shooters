@@ -120,5 +120,14 @@
   <ItemGroup>
     <None Include="Resources\imageedit_4_2239285065.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\391539__mativve__electro-win-sound %281%29.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\511397__pjhedman__se2-ding.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Bomb-SoundBible.com-891110113.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

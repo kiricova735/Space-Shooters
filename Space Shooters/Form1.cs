@@ -17,7 +17,6 @@ using System.Media;
 using System.Diagnostics;
 using System.IO;
 
-
 namespace Space_Shooters
 {
     public partial class spaceShooters : Form
@@ -44,9 +43,9 @@ namespace Space_Shooters
         Image shipImage2;
 
         int spaceShip1X = 5;
-        int spaceShip1Y = 155;
+        int spaceShip1Y = 170;
         int spaceShip2X = 737;
-        int spaceShip2Y = 155;
+        int spaceShip2Y = 170;
         int spaceShipWidth = 60;
         int spaceShipHeight = 30;
         int spaceShipSpeed = 5;
@@ -73,12 +72,14 @@ namespace Space_Shooters
         bool rightArrowDown = false;
         bool shiftDown = false;
         bool numpad0Down = false;
-        bool tabDown = false;
 
         SoundPlayer laser = new SoundPlayer(Properties.Resources.laser);
         SoundPlayer crash = new SoundPlayer(Properties.Resources.crash);
         SoundPlayer meteorExplosion = new SoundPlayer(Properties.Resources.meteorExplosion);
         SoundPlayer click = new SoundPlayer(Properties.Resources.click);
+        SoundPlayer win = new SoundPlayer(Properties.Resources.win);
+        SoundPlayer point = new SoundPlayer(Properties.Resources.point);
+        SoundPlayer explosion = new SoundPlayer(Properties.Resources.explosion);
 
         System.Windows.Media.MediaPlayer startingMusic = new System.Windows.Media.MediaPlayer();
 
@@ -121,7 +122,6 @@ namespace Space_Shooters
             projectile2YList.Clear();
             meteorXList.Clear();
             meteorYList.Clear();
-
 
             titleLabel.Text = "";
             subTitleLabel.Text = "";
@@ -174,12 +174,14 @@ namespace Space_Shooters
                     }
                     break;
                 case Keys.Escape:
+                    click.Play();
                     if (gameState == "waiting" || gameState == "over")
                     {
                         Application.Exit();
                     }
                     break;
                 case Keys.Tab:
+                    click.Play();
                     if (gameState == "waiting" || gameState == "over")
                     {
                         GameInitialize2();
@@ -223,9 +225,7 @@ namespace Space_Shooters
                 case Keys.Insert:
                     numpad0Down = false;
                     break;
-                case Keys.Tab:
-                    tabDown = false;
-                    break;
+
             }
         }
 
@@ -234,18 +234,21 @@ namespace Space_Shooters
             if (gameState == "controls PVP")
             {
                 titleLabel.Text = "      Controls";
-                subTitleLabel.Text = "PLAYER 1 CONTROLS\n W Key: Up\n S Key: Down\n A Key: Left\n D Key: Right\n Shift Key: Shoot\n PLAYER 2 CONTROLS\n Up Arrow Key: Up";
+                subTitleLabel.Text = "      PLAYER 1 CONTROLS              PLAYER 2 CONTROLS\n             W Key: Up                         Up Arrow Key: Up\n           S Key: Down                  Down Arrow Key: Down\n          A Key: Left                   Left Arrow Key: Left\n          D Key: Right                Right Arrow Key: Right\n      Shift Key: Shoot                Insert Key: Shoot\n";
             }
+
             else if (gameState == "waiting")
             {
                 titleLabel.Text = "SPACE SHOOTERS";
-                subTitleLabel.Text = "Press Space Bar to Play or Escape to Exit Game";
+                subTitleLabel.Text = "     Press Space Bar to Play Single Player, Tab to             Play Multiplayer, or Escape to Exit Game";
             }
+
             else if (gameState == "controls")
             {
-                titleLabel.Text = "      Controls";
-                subTitleLabel.Text = "W Key: Up\n S Key: Down\n A Key: Left\n D Key: Right\n Shift Key: Shoot\n\n Survive as long as you can!";
+                titleLabel.Text = "       Controls";
+                subTitleLabel.Text = "                                         W Key: Up\n                                      S Key: Down\n                                      A Key: Left\n                                      D Key: Right\n                                 Shift Key: Shoot\n\n                        Survive as long as you can!";
             }
+
             else if (gameState == "running PVP")
             {
                 //Player 1
@@ -308,7 +311,6 @@ namespace Space_Shooters
                     player2Score.Text = "";
                     myWatch.Start();
                     counter = 0;
-                    counter++;
                 }
             }
 
@@ -317,13 +319,15 @@ namespace Space_Shooters
                 counter++;
                 if (counter > 200)
                 {
+                   
                     startingMusic.Play();
                     gameState = "running PVP";
                     titleLabel.Text = "";
                     subTitleLabel.Text = "";
                     survivedLabel.Text = "";
+                    player1Score.Text = "0";
+                    player2Score.Text = "0";
                     counter = 0;
-                    counter++;
                 }
             }
 
@@ -332,14 +336,17 @@ namespace Space_Shooters
             {
                 spaceShip1Y -= spaceShipSpeed;
             }
+
             if (sDown == true && spaceShip1Y < 370)
             {
                 spaceShip1Y += spaceShipSpeed;
             }
+
             if (aDown == true && spaceShip1X > 5)
             {
                 spaceShip1X -= spaceShipSpeed;
             }
+
             if (dDown == true && spaceShip1X < 370)
             {
                 spaceShip1X += spaceShipSpeed;
@@ -350,14 +357,17 @@ namespace Space_Shooters
             {
                 spaceShip2Y -= spaceShipSpeed;
             }
+
             if (downArrowDown == true && spaceShip2Y < 370)
             {
                 spaceShip2Y += spaceShipSpeed;
             }
+
             if (leftArrowDown == true && spaceShip2X > 370)
             {
                 spaceShip2X -= spaceShipSpeed;
             }
+
             if (rightArrowDown == true && spaceShip2X < 737)
             {
                 spaceShip2X += spaceShipSpeed;
@@ -373,6 +383,7 @@ namespace Space_Shooters
                 projectileYList.Add(spaceShip1Y);
                 shotCounter = 0;
             }
+
             for (int i = 0; i < projectileXList.Count(); i++)
             {
                 projectileXList[i] += projectileSpeed;
@@ -389,6 +400,7 @@ namespace Space_Shooters
                     projectile2YList.Add(spaceShip2Y);
                     shotCounter2 = 0;
                 }
+
                 for (int i = 0; i < projectile2XList.Count(); i++)
                 {
                     projectile2XList[i] -= projectileSpeed;
@@ -427,7 +439,6 @@ namespace Space_Shooters
 
                     if (counter >= 3840)
                     {
-                        startingMusic.Stop();
                         meteorSpeed = 20;
                     }
                 }
@@ -453,16 +464,19 @@ namespace Space_Shooters
                     gameEngine.Enabled = false;
                     myWatch.Stop();
                     Thread.Sleep(1500);
+                    spaceShip1X = 5;
+                    spaceShip1Y = 160;
                     titleLabel.Text = "       You Died";
                     gameState = "over";
                     timerLabel.Text = myWatch.Elapsed.ToString(@"m\:ss\:ff");
                     survivedLabel.Text = "Time survived:";
-                    subTitleLabel.Text = " Press Space Bar to Play Again or Escape to Exit Game";
+                    subTitleLabel.Text = "      Press Space Bar to Play Single Player, Tab to             Play Multiplayer, or Escape to Exit Game";
                     myWatch.Reset();
                 }
 
                 //Collision with projectiles and meteors
             }
+
             for (int i = 0; i < projectileXList.Count(); i++)
             {
                 Rectangle projectileRec = new Rectangle(projectileXList[i], projectileYList[i], projectileWidth, projectileHeight);
@@ -481,8 +495,10 @@ namespace Space_Shooters
                     }
                 }
             }
+
             if (gameState == "running PVP")
             {
+
                 //Collision with projectiles and ships in PVP mode
                 //Player 2 shooting player 1
                 for (int i = 0; i < projectile2XList.Count(); i++)
@@ -491,15 +507,17 @@ namespace Space_Shooters
 
                     if (spaceShipRec.IntersectsWith(projectileRec2))
                     {
+                        explosion.Play();
                         playerScore2++;
-                        player2Score.Text = $"{playerScore2}";
+                        player2Score.Text = $"{playerScore2}";          
                         spaceShip1X = 5;
-                        spaceShip1Y = 155;
+                        spaceShip1Y = 170;
                         spaceShip2X = 737;
-                        spaceShip2Y = 155;
+                        spaceShip2Y = 170;
                         projectile2XList.RemoveAt(i);
                         projectile2YList.RemoveAt(i);
-                        Thread.Sleep(2000);
+                        Thread.Sleep(1500);
+                        point.Play();
                     }
                 }
 
@@ -511,46 +529,59 @@ namespace Space_Shooters
 
                     if (spaceShipRec2.IntersectsWith(projectileRec))
                     {
+                        explosion.Play();
                         playerScore1++;
                         player1Score.Text = $"{playerScore1}";
                         spaceShip1X = 5;
-                        spaceShip1Y = 155;
+                        spaceShip1Y = 170;
                         spaceShip2X = 737;
-                        spaceShip2Y = 155;
+                        spaceShip2Y = 170;
                         projectileXList.RemoveAt(i);
                         projectileYList.RemoveAt(i);
-                        Thread.Sleep(2000);
+                        Thread.Sleep(1500);
+                        point.Play();
                     }
+                }
+                if (spaceShipRec2.IntersectsWith(spaceShipRec) || spaceShipRec.IntersectsWith(spaceShipRec2))
+                {
+                    explosion.Play();
+                    spaceShip1X = 5;
+                    spaceShip1Y = 170;
+                    spaceShip2X = 737;
+                    spaceShip2Y = 170;
+                    Thread.Sleep(1500);                    
                 }
 
                 //If player 1 wins
                 if (playerScore1 == 5)
                 {
                     startingMusic.Stop();
-                 
+                    win.Play();
                     gameEngine.Enabled = false;
                     gameState = "over";
                     titleLabel.Text = "  Player 1 Wins!";
-                    subTitleLabel.Text = " Press Space Bar to Play Single Player, Tab to Play Multiplayer, or Escape to Exit Game";
+                    subTitleLabel.Text = "      Press Space Bar to Play Single Player, Tab to             Play Multiplayer, or Escape to Exit Game";
                     playerScore1 = 0;
+                    playerScore2 = 0;
                     player1Score.Text = "";
+                    player2Score.Text = "";
                 }
 
                 //If player 2 wins
                 if (playerScore2 == 5)
                 {
                     startingMusic.Stop();
-                    
+                    win.Play();
                     gameEngine.Enabled = false;
                     gameState = "over";
                     titleLabel.Text = "  Player 2 Wins!";
-                    subTitleLabel.Text = " Press Space Bar to Play Single Player, Tab to Play Multiplayer, or Escape to Exit Game";
+                    subTitleLabel.Text = "      Press Space Bar to Play Single Player, Tab to             Play Multiplayer, or Escape to Exit Game";
                     playerScore1 = 0;
+                    playerScore2 = 0;
                     player1Score.Text = "";
+                    player2Score.Text = "";
                 }
             }
-
-            //Points and winning in PVP mode
 
             Refresh();
         }
