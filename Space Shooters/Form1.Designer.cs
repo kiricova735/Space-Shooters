@@ -48,7 +48,7 @@
             // titleLabel
             // 
             this.titleLabel.BackColor = System.Drawing.Color.Transparent;
-            this.titleLabel.Font = new System.Drawing.Font("mono 07_65", 30F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.titleLabel.Font = new System.Drawing.Font("header 08_68", 30F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titleLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.titleLabel.Location = new System.Drawing.Point(110, 78);
             this.titleLabel.Name = "titleLabel";
@@ -59,7 +59,7 @@
             // subTitleLabel
             // 
             this.subTitleLabel.BackColor = System.Drawing.Color.Transparent;
-            this.subTitleLabel.Font = new System.Drawing.Font("mono 07_65", 12F);
+            this.subTitleLabel.Font = new System.Drawing.Font("header 08_68", 12F);
             this.subTitleLabel.ForeColor = System.Drawing.Color.White;
             this.subTitleLabel.Location = new System.Drawing.Point(22, 143);
             this.subTitleLabel.Name = "subTitleLabel";
@@ -71,9 +71,9 @@
             // timerLabel
             // 
             this.timerLabel.BackColor = System.Drawing.Color.Transparent;
-            this.timerLabel.Font = new System.Drawing.Font("mono 07_66", 9F);
+            this.timerLabel.Font = new System.Drawing.Font("header 08_68", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.timerLabel.ForeColor = System.Drawing.Color.White;
-            this.timerLabel.Location = new System.Drawing.Point(359, 9);
+            this.timerLabel.Location = new System.Drawing.Point(397, 7);
             this.timerLabel.Name = "timerLabel";
             this.timerLabel.Size = new System.Drawing.Size(145, 37);
             this.timerLabel.TabIndex = 2;
@@ -89,18 +89,18 @@
             // survivedLabel
             // 
             this.survivedLabel.BackColor = System.Drawing.Color.Transparent;
-            this.survivedLabel.Font = new System.Drawing.Font("mono 07_66", 9F);
+            this.survivedLabel.Font = new System.Drawing.Font("header 08_68", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.survivedLabel.ForeColor = System.Drawing.Color.White;
-            this.survivedLabel.Location = new System.Drawing.Point(166, 1);
+            this.survivedLabel.Location = new System.Drawing.Point(195, 0);
             this.survivedLabel.Name = "survivedLabel";
-            this.survivedLabel.Size = new System.Drawing.Size(196, 32);
+            this.survivedLabel.Size = new System.Drawing.Size(206, 36);
             this.survivedLabel.TabIndex = 4;
-            this.survivedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.survivedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // player1Score
             // 
             this.player1Score.BackColor = System.Drawing.Color.Transparent;
-            this.player1Score.Font = new System.Drawing.Font("mono 08_56", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player1Score.Font = new System.Drawing.Font("header 08_68", 50.25F);
             this.player1Score.ForeColor = System.Drawing.Color.White;
             this.player1Score.Location = new System.Drawing.Point(12, 9);
             this.player1Score.Name = "player1Score";
@@ -110,7 +110,7 @@
             // player2Score
             // 
             this.player2Score.BackColor = System.Drawing.Color.Transparent;
-            this.player2Score.Font = new System.Drawing.Font("mono 08_56", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player2Score.Font = new System.Drawing.Font("header 08_68", 50.25F);
             this.player2Score.ForeColor = System.Drawing.Color.White;
             this.player2Score.Location = new System.Drawing.Point(710, 9);
             this.player2Score.Name = "player2Score";

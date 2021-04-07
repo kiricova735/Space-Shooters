@@ -169,6 +169,7 @@ namespace Space_Shooters
                     click.Play();
                     if (gameState == "waiting" || gameState == "over")
                     {
+                        counter = 0;
                         GameInitialize();
                         gameState = "controls";
                     }
@@ -184,6 +185,7 @@ namespace Space_Shooters
                     click.Play();
                     if (gameState == "waiting" || gameState == "over")
                     {
+                        counter = 0;
                         GameInitialize2();
                         gameState = "controls PVP";
                     }
@@ -225,28 +227,26 @@ namespace Space_Shooters
                 case Keys.Insert:
                     numpad0Down = false;
                     break;
-
             }
         }
-
         private void SpaceShooters_Paint(object sender, PaintEventArgs e)
         {
             if (gameState == "controls PVP")
             {
-                titleLabel.Text = "      Controls";
-                subTitleLabel.Text = "      PLAYER 1 CONTROLS              PLAYER 2 CONTROLS\n             W Key: Up                         Up Arrow Key: Up\n           S Key: Down                  Down Arrow Key: Down\n          A Key: Left                   Left Arrow Key: Left\n          D Key: Right                Right Arrow Key: Right\n      Shift Key: Shoot                Insert Key: Shoot\n";
+                titleLabel.Text = "       Controls";
+                subTitleLabel.Text = "       PLAYER 1 CONTROLS                 PLAYER 2 CONTROLS\n             W Key: Up                         Up Arrow Key: Up\n           S Key: Down                   Down Arrow Key: Down\n           A Key: Left                        Left Arrow Key: Left\n           D Key: Right                     Right Arrow Key: Right\n       Shift Key: Shoot                      Insert Key: Shoot\n";
             }
 
             else if (gameState == "waiting")
             {
-                titleLabel.Text = "SPACE SHOOTERS";
-                subTitleLabel.Text = "     Press Space Bar to Play Single Player, Tab to             Play Multiplayer, or Escape to Exit Game";
+                titleLabel.Text = "  SPACE SHOOTERS";
+                subTitleLabel.Text = "            Press Space Bar to Play Single Player, Tab to                           Play Multiplayer, or Escape to Exit Game";
             }
 
             else if (gameState == "controls")
             {
                 titleLabel.Text = "       Controls";
-                subTitleLabel.Text = "                                         W Key: Up\n                                      S Key: Down\n                                      A Key: Left\n                                      D Key: Right\n                                 Shift Key: Shoot\n\n                        Survive as long as you can!";
+                subTitleLabel.Text = "                                      W Key: Up\n                                      S Key: Down\n                                      A Key: Left\n                                      D Key: Right\n                                  Shift Key: Shoot\n\n                         Survive as long as you can!";
             }
 
             else if (gameState == "running PVP")
@@ -316,10 +316,10 @@ namespace Space_Shooters
 
             if (gameState == "controls PVP")
             {
+                survivedLabel.Text = "";
                 counter++;
                 if (counter > 200)
-                {
-                   
+                {                  
                     startingMusic.Play();
                     gameState = "running PVP";
                     titleLabel.Text = "";
@@ -470,7 +470,7 @@ namespace Space_Shooters
                     gameState = "over";
                     timerLabel.Text = myWatch.Elapsed.ToString(@"m\:ss\:ff");
                     survivedLabel.Text = "Time survived:";
-                    subTitleLabel.Text = "      Press Space Bar to Play Single Player, Tab to             Play Multiplayer, or Escape to Exit Game";
+                    subTitleLabel.Text = "            Press Space Bar to Play Single Player, Tab to                           Play Multiplayer, or Escape to Exit Game";
                     myWatch.Reset();
                 }
 
@@ -498,7 +498,6 @@ namespace Space_Shooters
 
             if (gameState == "running PVP")
             {
-
                 //Collision with projectiles and ships in PVP mode
                 //Player 2 shooting player 1
                 for (int i = 0; i < projectile2XList.Count(); i++)
@@ -559,8 +558,8 @@ namespace Space_Shooters
                     win.Play();
                     gameEngine.Enabled = false;
                     gameState = "over";
-                    titleLabel.Text = "  Player 1 Wins!";
-                    subTitleLabel.Text = "      Press Space Bar to Play Single Player, Tab to             Play Multiplayer, or Escape to Exit Game";
+                    titleLabel.Text = "   Player 1 Wins!";
+                    subTitleLabel.Text = "            Press Space Bar to Play Single Player, Tab to                           Play Multiplayer, or Escape to Exit Game";
                     playerScore1 = 0;
                     playerScore2 = 0;
                     player1Score.Text = "";
@@ -574,15 +573,14 @@ namespace Space_Shooters
                     win.Play();
                     gameEngine.Enabled = false;
                     gameState = "over";
-                    titleLabel.Text = "  Player 2 Wins!";
-                    subTitleLabel.Text = "      Press Space Bar to Play Single Player, Tab to             Play Multiplayer, or Escape to Exit Game";
+                    titleLabel.Text = "   Player 2 Wins!";
+                    subTitleLabel.Text = "            Press Space Bar to Play Single Player, Tab to                           Play Multiplayer, or Escape to Exit Game";
                     playerScore1 = 0;
                     playerScore2 = 0;
                     player1Score.Text = "";
                     player2Score.Text = "";
                 }
             }
-
             Refresh();
         }
     }
